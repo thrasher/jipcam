@@ -1,0 +1,89 @@
+ -----
+ Using JMFStudio
+ -----
+ Jason Thrasher
+ -----
+ -----
+
+Using JMFStudio
+
+*Using JMFStudio
+
+	JMFStudio can be used to view video from an IP camera.  It must be setup to do so, and jipCam can provide the nessceary IP protocol handling infrastructure.
+
+*Adding JAR Files
+
+	jipCam and it's depencancies must be installed in the JMFStudio classpath.  On a windows machine, this will be:
+
++------------------------------------------------------------------------+
+$JAVA_HOME/jre/lib/ext
+(when $JAVA_HOME points to the JDK)
+	 
+$JAVA_HOME/lib/ext
+(when using the JRE)
++------------------------------------------------------------------------+
+			
+	Copy the jipCam JAR file, and all dependancy files to one of these locations.  (These dependancies aren't required as they aren't used by JMFStudio: servlet-api-2.4.jar, spring-2.0.6.jar, commons-cli-1.1.jar, junit-3.8.2.jar).
+
+*Adding a Protocol Prefix
+
+	Start JMFStudio and open the "JMF Registry Editor", from JMFStudio this is the menu sequence:
+
++------------------------------------------------------------------------+
+[JMFStudio menu] -> File -> Preferences...
+[JMF Registry Editor tabs] -> Packages -> Protocol Prefix List
++------------------------------------------------------------------------+
+
+	Add "net.sf.jipcam.axis" under the "Protocol Prefix List" heading, and click "Add" to add support for Axis camera connections.  All of these cameras use the "http" protocol.  A DataSource supporting this protocol is found in the axis subpackage.  JMF will find this automatically after it is configured.
+
+	Be sure to click the "Commit" button to save this change to the JMF Registry.
+	
+	Now close the JMF Registry Editor, and return to JMF Studio.  JMF is now configured to connect to Axis IP Cameras.
+	
+*Viewing Live Camera Video
+	After the JAR files and Protocol Prefix have been added as outlined above, open JMFStudio to connect to a camera.  From JMFStudio this is the menu sequence:
+
++------------------------------------------------------------------------+
+[JMFStudio menu] -> File -> Open URL
++------------------------------------------------------------------------+
+
+	Enter the url and appropriate port number for the camera you wish to connect to and click "Open".  The JMFStudio will connect to the camera and begin streaming and displaying live video.
+
+*JMFStudio Errors
+
+	If JMFStudio throws an error message, it's a good idea to turn on logging to see what's going on.  Turn on logging so that error messages are written to a file.
+	
++------------------------------------------------------------------------+
+[JMFStudio menu] -> File -> Preferences...
+[JMF Registry Editor tabs] -> User Settings
++------------------------------------------------------------------------+
+
+	Check the "Allow Logging" box, and enter a direcory in the "Logging Directory" field, then press "Commit" and close the JMF Registry Editor.
+
+	Try to connect to the camera url again, and if errors occur, check the logging directory for the "jmf.log" file, which should help with debugging.
+
+	This error message:
+	
++------------------------------------------------------------------------+
+XX Unable to create a playerjavax.media.NoPlayerException: Cannot find a Player for :http://10.0.0.100:8080/
++------------------------------------------------------------------------+
+
+	Usually means that not all of the required JARs are installed as outlined above.  Check that the JARs are in the correct directory and restart JMFStudio.
+	
+	This error message:
+	
++------------------------------------------------------------------------+
+XX java.io.IOException
+XX Unable to create a playerjavax.media.NoPlayerException: Error instantiating class: net.sf.jipcam.axis.media.protocol.http.DataSource : java.io.IOException
++------------------------------------------------------------------------+
+
+*More Information
+
+	See these resources for more information:
+	
+	* {{{http://java.sun.com/products/java-media/jmf/index.jsp}Java Media Framework API (JMF)}}
+	
+	* {{{http://java.sun.com/products/java-media/jmf/2.1.1/jmstudio/jmstudio.html}JMFStudio}}
+	
+	* {{{http://java.sun.com/products/java-media/jmf/2.1.1/jmfregistry/jmfregistry.html}JMF Registry Editor}}
+

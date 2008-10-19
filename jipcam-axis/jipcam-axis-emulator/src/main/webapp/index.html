@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>MJPEG Streaming Applet</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="The jipCam Team" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+<body>
+
+    <div id="banner">
+                          <a href="http://jipcam.sourceforge.net/" id="bannerLeft">
+                                            <img src="images/jipcam-project.png" alt="" />
+            </a>
+                          <a href="http://sourceforge.net/projects/jipcam/" id="bannerRight">
+                                    <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=156042&type=4" alt="" />
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+      <div class="xleft"></div>
+      <div class="xright">
+          <a href="http://java.sun.com/products/java-media/jmf/">JMF</a>
+          |
+          <a href="http://www.eyeqinc.com/">eyeQ</a>
+          |
+          <a href="http://www.axis.com/">Axis</a>
+          |
+          <a href="http://www.coachthrasher.com/">Jason Thrasher</a>
+      </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+
+<div id="leftColumn">
+    <div id="navcolumn">
+      <h5>ACE</h5>
+    <ul>
+              
+    <li class="none">
+          <a href="index.html">Introduction</a>
+        </li>
+    <li class="none">
+          <a href="mjpg/video.cgi?req_fps=10">MJPEG Stream</a>
+        </li>
+    <li class="none">
+          <a href="admin/getparam.cgi">Properties</a>
+        </li>
+    <li class="none">
+          <a href="applet.html">Video Applet</a>
+        </li>
+
+    </ul>
+
+      <h5>Links</h5>
+    <ul>
+    <li class="none">
+          <a href="http://jipcam.sourceforge.net/">jipCam on SourceForge</a>
+        </li>
+              
+    <li class="none">
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=156042">Download</a>
+        </li>
+    <ul>
+    </div>
+</div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+<div class="section"><h2>Axis Camera Emulator</h2>
+
+<p>
+The Axis Camera Emulator is a servlet-based webapp that provides a software simulation of Axis 2100 or 2120 camera hardware. It was born out of a need to load test image acquisition systems without purchasing new hardware. It can simulate an Axis 2100 (~$300 USD, April 2006), or an Axis 2120 (~$1400 USD, April 2006), thus saving you that much money per camera for your development and testing needs!
+This web application simulates an Axis camera using the version 1.0 camera API.
+</p>
+
+</div>
+<div class="section"><h2>Raw MJPEG Stream</h2>
+
+<p>
+The raw MJPEG video stream is emulated from a pre-recorded raw MJPEG file.
+It can be played back at different framerates to provide loadtesting of camera client code through jipCam.<br />
+<br />
+For example, this link provides an raw MJPEG stream at 10 FPS:<br />
+<a href="/axis-cgi/mjpg/video.cgi?req_fps=10">raw MJPEG at 10 FPS</a><br />
+</p>
+<p>
+This form allows you to easily vary the FPS:<br />
+<form action="/axis-cgi/mjpg/video.cgi" method="get">
+Frames Per Second: <input type="text" name="req_fps" value="2" size="4" />
+<input type="submit" value="submit" /><br>
+</form>
+</p>
+
+</div>
+<div class="section"><h2>Camera Properties</h2>
+
+<p>
+The <a href="/axis-cgi/admin/getparam.cgi">Camera Properties</a> servlet simulates a URL query against a camera.
+This information is used by jipCam to determine what kind of camera it is talking to.
+Specific camera properties can be queried using the appropriate cgi parameters.
+</p>
+<p>
+For example:<br />
+<a href="/axis-cgi/admin/getparam.cgi?root.Network">/axis-cgi/admin/getparam.cgi?root.Network</a><br />
+<a href="/axis-cgi/admin/getparam.cgi?root.BRAND.PRODFULLNAME">/axis-cgi/admin/getparam.cgi?root.BRAND.PRODFULLNAME</a><br />
+</p>
+
+</div>
+<div class="section"><h2>Video Applet</h2>
+<p>
+
+The <a href="applet.html">MJPEG Streaming Video Applet</a> requires <a href="http://java.sun.com/products/java-media/jmf/">JMF</a> in order to run.
+It demonstrates jipCam's MJPEG frame parser, and jipCam's integration with the Java Media Framework to provide access to raw JPEG video frames.
+In the case of this applet, video frames are acquired from the camera emulator's streaming MJPEG via jipCam, and rendered by JMF.
+In other applications jipCam could send the frames to video analysis libraries for other uses.
+The JMF notion of a "source" and "sink" for streaming content makes manipulation of the video source straight forward.
+
+</p>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2005-2006
+    
+          Jason Thrasher
+      </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+
+</body>
+</html>

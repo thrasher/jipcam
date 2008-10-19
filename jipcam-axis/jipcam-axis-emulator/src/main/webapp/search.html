@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Camera Google AJAX Search API</title>
+    <link href="http://www.google.com/uds/css/gsearch.css" type="text/css" rel="stylesheet"/>
+    <style type="text/css">
+
+    body {
+      background-color: white;
+      color: black;
+      font-family: Arial, sans-serif;
+      font-size: small;
+      margin: 15px;
+    }
+
+    .gsc-control { width : 400px; }
+
+
+    </style>
+    <script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0&amp;key=ABQIAAAAwsLgJkT8aLFhOI6LPemJcBQZFEELt5_Sq0zk12B5lvg0XXYpRBQJ5g2TYM7Pn1TamqBBE7C7pqBiaA" type="text/javascript"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+
+    var app;
+    function OnLoad() {
+      app = new App();
+    }
+
+    function App() {
+      // Create a search control
+      var searchControl = new GSearchControl();
+
+      // Add in a full set of searchers
+      //var localSearch = new GlocalSearch();
+      //searchControl.addSearcher(localSearch);
+var options = new GsearcherOptions();
+options.setExpandMode(GSearchControl.EXPAND_MODE_OPEN);
+var axisSearch = new GwebSearch();
+axisSearch.setUserDefinedLabel("Axis Camera Search");
+
+      searchControl.addSearcher(axisSearch, options);
+
+      // tell the searcher to draw itself and tell it where to attach
+      searchControl.draw(document.getElementById("searchcontrol"));
+      searchControl.setResultSetSize(GSearch.LARGE_RESULTSET);
+
+
+      // tell the search control to call be on start/stop
+      searchControl.setSearchCompleteCallback(this, App.prototype.OnSearchComplete);
+      searchControl.setSearchStartingCallback(this, App.prototype.OnSearchStarting);
+      searchControl.setOnKeepCallback(this, App.prototype.OnKeep, "Add to jipCam");
+
+      // execute an inital search
+//      searchControl.execute("inurl:\"/axis-cgi/\"");
+      searchControl.execute("inurl\:\"/mjpg/video.mjpg\" axis camera");
+    }
+
+
+
+    App.prototype.OnSearchComplete = function(sc, searcher) {
+
+      // if we have local search results, put them on the map
+      if ( searcher.results && searcher.results.length > 0) {
+        for (var i = 0; i < searcher.results.length; i++) {
+          var result = searcher.results[i];
+
+          if (result.GsearchResultClass == GwebSearch.RESULT_CLASS) {
+            //alert("url: " + result.unescapedUrl);
+            this.AppendCamera(result);
+          }
+        }
+      }
+    }
+
+    App.prototype.OnSearchStarting = function(sc, searcher, query) {
+      //alert("query: " + query);
+    }
+
+    App.prototype.OnKeep = function(result) {
+      if (result.GsearchResultClass == GwebSearch.RESULT_CLASS) {
+        //alert("OnKeep: " + result.url);
+        // clone the result html node
+        //var node = result.html.cloneNode(true);
+
+        // write the link to our save results div
+        this.AppendCamera(result);
+
+      }
+    }
+
+    App.prototype.AppendCamera = function (result) {
+      //node = "<div>"+result.url+"</div>";
+      var link = document.createElement("a");
+      link.setAttribute("href", result.unescapedUrl);
+      link.setAttribute("name", result.titleNoFormatting);
+
+      var newDiv = document.createElement("div");
+      newDiv.innerHTML = "<a href=\""+result.unescapedUrl+"\" >"+result.titleNoFormatting+"</a>";
+
+      // attach it
+      var savedResults = document.getElementById("saved_results");
+      savedResults.appendChild(newDiv);
+    }
+
+    function method_closure(object, method, opt_argArray) {
+      return function() {
+        return method.apply(object, opt_argArray);
+      }
+    }
+
+    GSearch.setOnLoadCallback(OnLoad);
+
+    //]]>
+    </script>
+  </head>
+  <body>
+  	<h2>jipCam IP Camera Search</h2>
+    <table width="100%">
+      <tr>
+        <td valign="top" width="40%">
+          Search for IP Cameras Here and they will be added to the jipCam results
+          <div id="searchcontrol">Loading...</div>
+        </td>
+        <td valign="top" width="60%">
+          jipCam Camera Results
+          <div id="saved_results"></div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

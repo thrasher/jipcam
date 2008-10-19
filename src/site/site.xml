@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="${project.name}">
+	<bannerLeft>
+		<name>${project.name}</name>
+		<src>/images/jipcam-project.png</src>
+		<href>http://jipcam.sourceforge.net/</href>
+	</bannerLeft>
+	
+	<bannerRight>
+		<src>
+			http://sflogo.sourceforge.net/sflogo.php?group_id=156042&amp;type=4
+		</src>
+		<href>http://sourceforge.net/projects/jipcam/</href>
+	</bannerRight>
+	
+	<publishDate format="dd MMM yyyy" />
+	
+	<skin>
+		<groupId>org.apache.tapestry</groupId>
+		<artifactId>maven-skin</artifactId>
+		<version>1.1</version>
+	</skin>
+
+	<body>
+		<links>
+			<item name="JMF"
+				href="http://java.sun.com/products/java-media/jmf/" />
+			<item name="eyeQ" href="http://www.eyeqinc.com/" />
+			<item name="Axis" href="http://www.axis.com/" />
+			<item name="Jason Thrasher"
+				href="http://www.coachthrasher.com/" />
+		</links>
+
+		<menu name="General">
+			<item name="News" href="index.html" />
+			<item name="Introduction" href="introduction.html" />
+			<item name="FAQ" href="faq.html" />
+			<item name="Release Notes" href="release-notes.html" />
+			<item name="Configuring JMFStudio" href="jmfstudio.html" />
+			<item name="Supported Cameras" href="cameras.html" />
+			<item name="Axis Camera Emulator" href="http://www.coachthrasher.com/axis-cgi/" />
+			<item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=156042" />
+		</menu>
+
+		<menu ref="modules" />
+		
+		${reports}
+
+	</body>
+</project>

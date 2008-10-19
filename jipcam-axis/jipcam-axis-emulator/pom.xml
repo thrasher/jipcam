@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>jipcam-axis</artifactId>
+		<groupId>net.sf.jipcam</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.sf.jipcam</groupId>
+	<artifactId>jipcam-axis-emulator</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>jipCam Axis Camera Emulator (ACE)</name>
+	<url>jipcam-axis/jipcam-axis-emulator/</url>
+
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<plugins>
+			<!--
+			http://maven.apache.org/plugins/maven-dependency-plugin/examples/copying-project-dependencies.html
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-applet-dependencies</id>
+						<!--
+						TODO: use prepare-package for Maven 2.1 since this should happen
+						before the WAR is built.
+						<phase>prepare-package</phase>
+						-->
+						<phase>test</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- copying applet jars into war path -->
+							<outputDirectory>
+								${project.build.directory}/${project.build.finalName}/applet
+							</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>
+								true
+							</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.0.0</version>
+				<configuration>
+					<contextPath>/axis-cgi</contextPath>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<scanTargets>
+						<scanTarget>
+							src/main/webapp/WEB-INF/web.xml
+						</scanTarget>
+					</scanTargets>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>sample-axis*.mjpeg</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.jipcam</groupId>
+			<artifactId>jipcam-axis-core</artifactId>
+			<scope>compile</scope>
+			<version>${pom.parent.version}</version>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<mjpeg.file>/content/sample-axis2120.mjpeg</mjpeg.file>
+		<mjpeg.fps>10</mjpeg.fps>
+		<camera.model>2120</camera.model>
+	</properties>
+</project>

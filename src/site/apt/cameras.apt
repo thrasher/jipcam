@@ -1,0 +1,47 @@
+ -----
+ Supported Cameras
+ -----
+ -----
+ -----
+
+Supported Cameras
+
+*Model Numbers
+
+	This release allows JMF connections to the following IP Cameras:
+	
+    * Axis 2100
+		
+    * Axis 2120
+		
+    * Axis 2130 PZT
+		
+    * Axis 205
+		
+    * Axis 206M
+		
+    * Axis 207
+    
+    []
+
+*Adding Support for new Cameras
+
+	It's quite easy to add support for additional cameras, especially Axis cameras.  Generally this is done by extending:
+	
++------------------------------------------------------------------------+
+	net.sf.jipcam.axis.Axis2100CaptureDevice	
++------------------------------------------------------------------------+
+
+	and adding a few lines to:
+	
++------------------------------------------------------------------------+
+	net.sf.jipcam.axis.media.protocol.http.DataSource.connect()
++------------------------------------------------------------------------+
+
+	For an example of how to do this, see the file:
+	
++------------------------------------------------------------------------+
+	net.sf.jipcam.axis.Axis2120CaptureDevice.java
++------------------------------------------------------------------------+
+
+
