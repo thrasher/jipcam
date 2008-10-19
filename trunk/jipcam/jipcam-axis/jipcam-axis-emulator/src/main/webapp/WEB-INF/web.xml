@@ -1,0 +1,91 @@
+<?xml version = '1.0' encoding = 'windows-1252'?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+	<description>Axis Camera Emulator</description>
+
+	<!-- Define the basename for a resource bundle for I18N -->
+	<context-param>
+		<param-name>
+			javax.servlet.jsp.jstl.fmt.localizationContext
+		</param-name>
+		<param-value>ApplicationResources</param-value>
+	</context-param>
+	<!-- Fallback locale if no bundles found for browser's preferred locale -->
+	<!-- Force a single locale using param-name 'javax.servlet.jsp.jstl.fmt.locale' -->
+	<context-param>
+		<param-name>
+			javax.servlet.jsp.jstl.fmt.fallbackLocale
+		</param-name>
+		<param-value>en</param-value>
+	</context-param>
+	<!-- Context Configuration locations for Spring XML files -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext*.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.web.util.IntrospectorCleanupListener
+		</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			net.sf.jipcam.axis.emulator.StartupListener
+		</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>MjpegServlet</servlet-name>
+		<servlet-class>
+			net.sf.jipcam.axis.emulator.MjpegServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>GetParamServlet</servlet-name>
+		<servlet-class>
+			net.sf.jipcam.axis.emulator.GetParamServlet
+		</servlet-class>
+	</servlet>
+
+	<!-- Axis API URL mapping -->
+	<servlet-mapping>
+		<servlet-name>MjpegServlet</servlet-name>
+		<url-pattern>/mjpg/video.cgi</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetParamServlet</servlet-name>
+		<url-pattern>/admin/getparam.cgi</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>35</session-timeout>
+	</session-config>
+
+	<mime-mapping>
+		<extension>html</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+
+	<mime-mapping>
+		<extension>txt</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="jipCam">
+	<bannerLeft>
+		<name>jipCam</name>
+		<src>/images/jipcam-project.png</src>
+		<href>http://jipcam.sourceforge.net/</href>
+	</bannerLeft>
+	
+	<bannerRight>
+		<src>
+			http://sflogo.sourceforge.net/sflogo.php?group_id=156042&amp;type=4
+		</src>
+		<href>http://sourceforge.net/projects/jipcam/</href>
+	</bannerRight>
+	
+	<publishDate format="dd MMM yyyy" />
+	
+	<skin>
+		<groupId>org.apache.tapestry</groupId>
+		<artifactId>maven-skin</artifactId>
+		<version>1.1</version>
+	</skin>
+
+	<body>
+
+		<menu ref="modules" />
+		
+		${reports}
+
+	</body>
+</project>

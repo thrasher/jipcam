@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>MJPEG Streaming Applet</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="The jipCam Team" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+<body>
+
+    <div id="banner">
+                          <a href="http://jipcam.sourceforge.net/" id="bannerLeft">
+                                            <img src="images/jipcam-project.png" alt="" />
+            </a>
+                          <a href="http://sourceforge.net/projects/jipcam/" id="bannerRight">
+                                    <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=156042&type=4" alt="" />
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+      <div class="xleft"></div>
+      <div class="xright">
+          <a href="http://java.sun.com/products/java-media/jmf/">JMF</a>
+          |
+          <a href="http://www.eyeqinc.com/">eyeQ</a>
+          |
+          <a href="http://www.axis.com/">Axis</a>
+          |
+          <a href="http://www.coachthrasher.com/">Jason Thrasher</a>
+      </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+
+<div id="leftColumn">
+    <div id="navcolumn">
+      <h5>ACE</h5>
+    <ul>
+              
+    <li class="none">
+          <a href="index.html">Introduction</a>
+        </li>
+    <li class="none">
+          <a href="mjpg/video.cgi?req_fps=10">MJPEG Stream</a>
+        </li>
+    <li class="none">
+          <a href="admin/getparam.cgi">Properties</a>
+        </li>
+    <li class="none">
+          <a href="applet.html">Video Applet</a>
+        </li>
+
+    </ul>
+
+      <h5>Links</h5>
+    <ul>
+    <li class="none">
+          <a href="http://jipcam.sourceforge.net/">jipCam on SourceForge</a>
+        </li>
+              
+    <li class="none">
+          <a href="http://sourceforge.net/project/showfiles.php?group_id=156042">Download</a>
+        </li>
+    <ul>
+    </div>
+</div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+<div class="section"><h2>MJPEG Streaming Video Applet</h2>
+<p>
+
+<!--
+see: http://java.sun.com/j2se/1.5.0/docs/guide/plugin/developer_guide/using_tags.html#object
+junit-3.8.2.jar,servlet-api-2.4.jar
+log4j.xml,jipcam-axis-emulator.properties,ApplicationResources.properties
+
+<object
+	classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" 
+	codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_5-windows-i586.cab#Version=1,5,0,0"
+	name="nowPlaying"
+	width="352"
+	height="240"
+	>
+	<param name="code" value="net.sf.jipcam.axis.tools.MjpegApplet" />
+	<param name="archive" value="jipcam-axis-core-1.0-SNAPSHOT.jar,jmf-2.1.1e.jar,commons-codec-1.2.jar,commons-logging-1.0.4.jar,log4j-1.2.14.jar,spring-2.0.5.jar,commons-cli-1.1.jar,commons-httpclient-3.1-rc1.jar" />
+	<param name="name" value="nowPlaying" />
+	<param name="type" value="application/x-java-bean;version=1.5" />
+	<param name="codebase" value="applet/" />
+	
+	<param name="width" value="352" />
+	<param name="height" value="240" />
+	<param name="fps" value="10" />
+	<param name="mjpeg" value="/axis-cgi/mjpg/video.cgi?req_fps=10" />
+
+	<comment>
+		<embed code="net.sf.jipcam.axis.tools.MjpegApplet.class"
+			codebase="applet/"
+			archive="jipcam-axis-core-1.0-SNAPSHOT.jar,jmf-2.1.1e.jar,commons-codec-1.2.jar,commons-logging-1.0.4.jar,log4j-1.2.14.jar,spring-2.0.5.jar,commons-cli-1.1.jar,commons-httpclient-3.1-rc1.jar"
+			width="352"
+			height="240"
+			pluginspage="http://java.sun.com/j2se/1.5.0/download.html">
+			<noembed>
+				No Java Support.
+			</noembed>
+		</embed>
+	</comment>
+</object>
+-->
+
+<applet
+	codebase="applet/"
+	code="net.sf.jipcam.axis.tools.MjpegApplet"
+	archive="jipcam-axis-core-1.0-SNAPSHOT.jar,jmf-2.1.1e.jar,commons-codec-1.2.jar,commons-logging-1.0.4.jar,log4j-1.2.14.jar,spring-2.0.5.jar,commons-cli-1.1.jar,commons-httpclient-3.1-rc1.jar"
+	height="240" width="352" align="bottom">
+		<param name="width" value="352">
+		<param name="height" value="240">
+		<param name="fps" value="10">
+		<param name="mjpeg" value="/axis-cgi/mjpg/video.cgi?req_fps=10">
+		This browser does not appear to support Applets.
+</applet>
+
+</p>
+<p>
+This MJPEG streaming video applet requires <a href="http://java.sun.com/products/java-media/jmf/">JMF</a> in order to run.
+It demonstrates jipCam's MJPEG frame parser, and jipCam's integration with the Java Media Framework to provide access to raw JPEG video frames.
+In the case of this applet, video frames are acquired from the camera emulator's streaming MJPEG via jipCam, and rendered by JMF.
+In other applications jipCam could send the frames to video analysis libraries for other uses.
+The JMF notion of a "source" and "sink" for streaming content makes manipulation of the video source straight forward.
+</p>
+    </div>
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">
+			&#169; 2005-2007 Jason Thrasher
+      </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+
+</body>
+</html>

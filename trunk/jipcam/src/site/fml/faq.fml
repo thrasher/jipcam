@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<faqs id="General FAQ">
+  <part id="General">
+    <faq id="what">
+      <question>What is jipCam?</question>
+      <answer>
+        <p>
+          jipCam is a Java library that provides a Java Media Framework based
+					datasource to read from different Internet Protocol based
+					video cameras.
+        </p>
+      </answer>
+    </faq>
+    <faq id="origin">
+      <question>Where did it come from?</question>
+      <answer>
+        <p>
+          <a href="http://www.eyeqinc.com/">eyeQ, Inc.</a> needed to retrieve image
+					data from an Axis camera's "Motion JPEG" stream as a set of
+					individual images.
+					Jason build them a working solution for Axis 21x0 series cameras.
+					eyeQ was very successful with all of it's open source infrastructure,
+					and noting it's gains from using open source code, decided to
+					reciprocate to the OSS community by releasing jipCam
+					for others to use.
+        </p>
+      </answer>
+    </faq>
+    <faq id="ipcam">
+      <question>What is an IP camera?</question>
+      <answer>
+        <p>
+          An IP camera is generally a video camera that streams image data to
+					clients using an internet protocol (IP).  Usually these cameras
+					provide images and video through an embedded webserver, and can therefore
+					be accessed directly with a URL.  Some manufacturers call them
+					<a href="http://en.wikipedia.org/wiki/Webcam">"webcams"</a> but the IP cameras are distinguished in that they do
+					not need to be plugged into a computer: they only require the network.
+        </p>
+      </answer>
+    </faq>
+    <faq id="webserver">
+      <question>If there's an embedded webserver with images, why use jipCam?</question>
+      <answer>
+        <p>
+					An embedded webserver makes camera installation easier by providing
+					a no-mess field of view; however it doesn't allow easy image processing
+					of the video image data.
+					Image processing can be used to build new applications using IP camera infrastructure.
+					By this we mean building applications that go beyond just viewing a video image.
+					jipCam makes the raw image data available using a Java stream parser,
+					or using the Java Media Framework.
+        </p>
+      </answer>
+    </faq>
+    <faq id="performance">
+      <question>Is there a performance hit to processing video in Java?</question>
+      <answer>
+        <p>
+					To be clear, jipCam doesn't process or manipulate video images, it
+					provides a mechanism to easily connect to an IP camera, and parse raw
+					byte data, or process images within the Java Media Framework.
+					With the right design, Java may be just as fast as C or C++, but many
+					other projects (including the Java Media Framework) choose to
+					manipulate images in native libraries using JNI.  jipCam allows
+					developers to work cleanly with JNI for image processing,
+					just as JMF does.
+        </p>
+      </answer>
+    </faq>
+    <faq id="cpu">
+      <question>What is the CPU load like?</question>
+      <answer>
+				<p>
+					Performance was a design consideration for the Axis MJPEG parser in
+					jipCam: it is capable of parsing 100's of JPEG frames per second from
+					file-based MJPEG streams.
+				</p>
+				<p>
+					In practice, most IP cameras have a maximum rate of ~30 fps - so the CPU hit from real-time parsing is minimal.
+					For a 1 GHz Pentium III CPU Windows box parsing 352x240 pixel jpeg at 10 fps, you might see a 3% cpu hit in Task Manager.
+					For a 3.2 GHz Pentium IV CPU Windows box parsing 352x240 pixel jpeg at 10 fps, you might see a 1% cpu hit in Task Manager.
+					For a dual Athlon MP 2 GHz Fedora box parsing 352x240 pixel jpeg at 10 fps, you might see a 0% cpu hit in "top".
+					No solid benchmarking has been done here though, so YMMV.
+					NOTE: The CPU load for image processing is a function of the algorithm used! (That's where the real cost usually lives.)
+				</p>
+      </answer>
+    </faq>
+    <faq id="cameras">
+      <question>Does jipCam support my camera?</question>
+      <answer>
+				<p>
+					Yes, if you write a parser for its format and donate it to this project! :)
+					jipCam was originally written for the
+					<a href="http://www.axis.com/products/cam_2100/">Axis 2100</a> and
+					<a href="http://www.axis.com/products/cam_2120/">Axis 2120</a> cameras,
+					which use a "Motion JPEG" stream to deliver video data frames.
+				</p>
+				<p>
+					Code has been contributed to support the Axis 205, Axis 206M, and Axis 207 cameras by Nigel Simpson and Sun Microsystems.
+				</p>
+				<p>
+					Many IP cameras on the market say they support "Motion JPEG"
+					and it is possible that the MJPEG parser that works for the Axis
+					cameras will also work for your camera.
+					You should try it and let us know!
+				</p>
+      </answer>
+    </faq>
+    <faq id="mjpeg">
+      <question>Doesn't JMF support MJPEG out of the box?</question>
+      <answer>
+				<p>
+					According to the <a href="http://java.sun.com/products/java-media/jmf/2.1.1/formats.html">JMF 2.1.1e formats</a> document, yes.
+					However, we couldn't get it to work, nor could we find any examples of it, NOR does it appear that the Axis 2100/2120 streams are
+					implemented as "well defined" MJPEG streams.  If you get it to work, let the world know!
+				</p>
+      </answer>
+    </faq>
+    <faq id="license">
+      <question>What license does it use?</question>
+      <answer>
+				<p>
+					The <a href="http://www.gnu.org/copyleft/lesser.html">LGPL</a> open source license allows the use of jipCam in open source and commercial projects.
+				</p>
+      </answer>
+    </faq>
+  </part>
+</faqs>

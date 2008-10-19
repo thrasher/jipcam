@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Notes for SourceForge releases:
+ant clean
+ant war
+ant release-src
+ant release-bin
+mvn site
+mvn javadoc:javadoc
+mvn site:deploy
+-->
+<project default="jar" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+	<artifact:dependencies pathId="dependency.classpath" filesetId="dependency.fileset">
+		<dependency groupId="javax.media" artifactId="jmf" version="2.1.1e" scope="provided" />
+		<dependency groupId="javax.servlet" artifactId="servlet-api" version="2.4" scope="provided" />
+		<dependency groupId="log4j" artifactId="log4j" version="1.2.13" scope="provided" />
+		<dependency groupId="commons-cli" artifactId="commons-cli" version="1.0" scope="provided" />
+		<dependency groupId="commons-httpclient" artifactId="commons-httpclient" version="3.0-rc4" scope="provided" />
+	</artifact:dependencies>
+
+	<!-- applet files -->
+	<artifact:dependencies pathId="maven.applet.classpath" filesetId="maven.applet.fileset">
+		<dependency groupId="commons-httpclient" artifactId="commons-httpclient" version="3.0-rc4" scope="provided" />
+		<dependency groupId="javax.media" artifactId="jmf" version="2.1.1e" scope="provided" />
+		<dependency groupId="log4j" artifactId="log4j" version="1.2.13" scope="provided" />
+		<dependency groupId="commons-logging" artifactId="commons-logging" version="1.0.4" scope="provided" />
+		<dependency groupId="commons-cli" artifactId="commons-cli" version="1.0" scope="provided" />
+	</artifact:dependencies>
+
+	<!-- webapp files -->
+	<artifact:dependencies pathId="maven.webapp.classpath" filesetId="maven.webapp.fileset">
+		<dependency groupId="commons-httpclient" artifactId="commons-httpclient" version="3.0-rc4" scope="provided" />
+		<dependency groupId="log4j" artifactId="log4j" version="1.2.13" scope="provided" />
+		<dependency groupId="commons-logging" artifactId="commons-logging" version="1.0.4" scope="provided" />
+	</artifact:dependencies>
+
+
+	<artifact:pom id="maven.project" file="pom.xml" />
+
+	<property file="build.properties" />
+
+	<!-- camera url can be changed from the command line with -Dcamera.url=http://myIpCamUrl -->
+	<property name="camera.url" value="http://10.0.0.90" />
+
+	<!-- various dirs -->
+	<property name="src.dir" value="src/main/java" />
+	<property name="target.dir" value="target" />
+	<property name="classes.dir" value="${target.dir}/classes" />
+	<property name="ace.dir" value="src/ace" />
+	<property name="data.dir" value="data" />
+	<!-- various files -->
+	<property name="jar.name" value="${maven.project.artifactId}-${maven.project.version}.jar" />
+	<property name="jar.file" value="${target.dir}/${jar.name}" />
+	<property name="war.name" value="axis-cgi.war" />
+	<property name="war.file" value="${target.dir}/${war.name}" />
+	<property name="bundle.jar" value="${maven.project.artifactId}-${maven.project.version}-bundle.jar" />
+
+	<path id="project.class.path">
+		<path refid="maven.classpath" />
+	</path>
+
+	<target name="init">
+		<tstamp />
+		<echo>The version is ${maven.project.version}</echo>
+	</target>
+
+	<target name="compile" description="compile the binaries">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" source="1.2" target="1.1">
+			<compilerarg value="-Xlint:deprecation" />
+			<classpath refid="dependency.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ================================= 
+          target: clean              
+         ================================= -->
+	<target name="clean" description="--> remove all generated output and restore project to fresh checkout">
+		<delete failonerror="false">
+			<fileset dir="${target.dir}">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+		<delete dir="${target.dir}" failonerror="true" />
+	</target>
+
+	<!-- ================================= 
+          target: rebuild              
+         ================================= -->
+	<target name="rebuild" depends="clean,compile" description="--> recompile from scratch" />
+
+
+	<!-- ================================= 
+          target: jar              
+         ================================= -->
+	<target name="jar" depends="compile" description="--> create the library jar file">
+		<jar destfile="${jar.file}">
+			<fileset dir="${classes.dir}" id="classes">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${src.dir}" id="properties">
+				<exclude name="**/*.java" />
+				<include name="net/sf/jipcam/**/*" />
+				<exclude name="log4j.properties" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="net.sf.jipcam.Install" />
+				<attribute name="Build-Java-Version" value="${java.version}" />
+				<attribute name="Class-Path" value="${jar.name} commons-cli-1.0.jar commons-codec-1.2.jar commons-httpclient-3.0-rc4.jar commons-lang-1.0.jar commons-logging-1.0.3.jar jmf-2.1.1e.jar log4j-1.2.13.jar" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="AxisPlayer.jar" depends="jar" description="--> create the library jar file">
+		<jar destfile="${target.dir}/AxisPlayer-${maven.project.version}.jar">
+			<fileset dir="${src.dir}" id="properties">
+				<include name="log4j.properties" />
+				<exclude name="**/*exclude" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="net.sf.jipcam.axis.tools.AxisPlayer" />
+				<attribute name="Build-Java-Version" value="${java.version}" />
+				<attribute name="Class-Path" value="${jar.name} commons-cli-1.0.jar commons-codec-1.2.jar commons-httpclient-3.0-rc4.jar commons-lang-1.0.jar commons-logging-1.0.3.jar jmf-2.1.1e.jar log4j-1.2.13.jar" />
+			</manifest>
+		</jar>
+		<copy todir="${target.dir}">
+			<fileset refid="dependency.fileset" />
+			<mapper type="flatten" />
+		</copy>
+	</target>
+
+	<!-- every deployment of ACE can be used to simluate an Axis camera (without purchasing hardware!) -->
+	<target name="war" depends="jar" description="--> create ACE: Axis Camera Emulator">
+		<property name="tmp.dir" value="${target.dir}/stage" />
+		<!-- create dirs -->
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${tmp.dir}" />
+		<mkdir dir="${tmp.dir}/WEB-INF" />
+		<mkdir dir="${tmp.dir}/WEB-INF/lib" />
+		<mkdir dir="${tmp.dir}/WEB-INF/classes" />
+
+		<!-- copy html files -->
+		<copy todir="${tmp.dir}" filtering="true" overwrite="true">
+			<fileset dir="${ace.dir}">
+				<include name="**/*" />
+				<exclude name="images/*" />
+			</fileset>
+			<filterset>
+				<filter token="JAR.NAME" value="${jar.name}" />
+				<filter token="MJPEG.FILE" value="${mjpeg.file}" />
+				<filter token="MJPEG.FPS" value="${mjpeg.fps}" />
+				<filter token="CAMERA.PROPERTIES" value="${camera.properties}" />
+			</filterset>
+		</copy>
+		<!-- copy images -->
+		<copy todir="${tmp.dir}" filtering="false" overwrite="false">
+			<fileset dir="${ace.dir}">
+				<include name="images/*" />
+			</fileset>
+		</copy>
+		<!-- copy video data files -->
+		<copy todir="${tmp.dir}" filtering="false" overwrite="false">
+			<fileset dir="${data.dir}">
+				<include name="**/*.mjpeg" />
+			</fileset>
+		</copy>
+		
+		<!-- libs used by applet -->
+		<copy todir="${tmp.dir}" filtering="false" overwrite="false">
+			<fileset refid="maven.applet.fileset" />
+			<mapper type="flatten" />
+		</copy>
+		<copy todir="${tmp.dir}" file="${jar.file}" />
+		<copy todir="${tmp.dir}" file="${src.dir}/log4j.properties" />
+		
+		<!-- libs used by webapp -->
+		<copy todir="${tmp.dir}/WEB-INF/lib" filtering="false" overwrite="false">
+			<fileset refid="maven.webapp.fileset" />
+			<mapper type="flatten" />
+		</copy>
+		<copy todir="${tmp.dir}/WEB-INF/lib" file="${jar.file}" />
+		<!-- classes -->
+		<copy todir="${tmp.dir}/WEB-INF/classes" file="${src.dir}/log4j.properties" />
+		
+		<war destfile="${war.file}" webxml="${tmp.dir}/WEB-INF/web.xml">
+			<fileset dir="${tmp.dir}">
+				<exclude name="WEB-INF/web.xml" />
+				<exclude name="WEB-INF/lib/**" />
+				<exclude name="WEB-INF/classes/**" />
+				<include name="**/*" />
+			</fileset>
+
+			<!-- files for servlets/jsps -->
+			<lib dir="${tmp.dir}/WEB-INF/lib" />
+
+			<!-- <classes dir="${class.root}"/> -->
+			<classes dir="${tmp.dir}/WEB-INF/classes" />
+		</war>
+	</target>
+
+	<!-- run the AxisPlayer -->
+	<target name="AxisPlayer.run" depends="AxisPlayer.jar" description="--> Run the AxisPlayer">
+		<!-- help the user with a little info -->
+		<echo message="Running AxisPlayer process for camera url: ${camera.url}" />
+		<echo message="For a different camera, try:" />
+		<echo message="ant -Dcamera.url=http://myIpCameraUrl AxisPlayer.run" />
+
+		<!-- run the process -->
+		<java jar="${target.dir}/AxisPlayer-${maven.project.version}.jar" spawn="false" fork="true">
+			<classpath>
+				<fileset refid="dependency.fileset" />
+				<pathelement location="${target.dir}/${jar.name}" />
+				<pathelement location="src/main/java" /><!-- log4j.properties -->
+			</classpath>
+			<arg value="-j" />
+			<arg value="${camera.url}" />
+		</java>
+	</target>
+
+	<!-- run the framerate monitor for the given camera.url -->
+	<target name="FramerateMonitor.run" depends="jar" description="--> Run the FramerateMonitor">
+		<java classname="net.sf.jipcam.axis.tools.FramerateMonitor" spawn="false" fork="true">
+			<classpath>
+				<fileset refid="dependency.fileset" />
+				<pathelement location="${target.dir}/${jar.name}" />
+				<pathelement location="src/main/java" /><!-- log4j.properties -->
+			</classpath>
+			<arg value="-j" />
+			<arg value="${camera.url}" />
+		</java>
+	</target>
+
+	<!-- hack to capture the raw HTTP output from the camera to an mjpeg file -->
+	<target name="FrameExtract.run" depends="jar" description="--> Run the FrameExtract">
+		<java classname="net.sf.jipcam.axis.tools.FrameExtract" spawn="false" fork="true">
+			<classpath>
+				<fileset refid="dependency.fileset" />
+				<pathelement location="${target.dir}/${jar.name}" />
+				<pathelement location="src/main/java" /><!-- log4j.properties -->
+			</classpath>
+			<arg value="${camera.url}" />
+			<!-- start frame offset -->
+			<arg value="10" />
+			<!-- frame count -->
+			<arg value="100" />
+		</java>
+	</target>
+
+	<!-- hack to capture the raw HTTP output from the camera to an mjpeg file -->
+	<target name="MjpegToMov.run" depends="jar" description="--> Convert MJPEG to MOV">
+		<property name="mjpeg.file" value="frames_10-110.mjpeg"/>
+		<property name="mov.file" value="frames_10-110.mov"/>
+		<java classname="net.sf.jipcam.axis.tools.MjpegToMov" spawn="false" fork="false">
+			<classpath>
+				<fileset refid="dependency.fileset" />
+				<pathelement location="${target.dir}/${jar.name}" />
+				<pathelement location="src/main/java" /><!-- log4j.properties -->
+			</classpath>
+			<arg value="--fps" />
+			<arg value="10" />
+			<arg value="--width" />
+			<arg value="352" />
+			<arg value="--height" />
+			<arg value="240" />
+			<arg value="--mjpeg" />
+			<arg value="${mjpeg.file}" />
+			<arg value="--mov" />
+			<arg value="${mov.file}" />
+		</java>
+	</target>
+
+	<!-- install to JVM -->
+	<target name="install" depends="jar" description="--> build and install to the default $JAVA_HOME/lib/ext">
+		<echo>Installing jipCam and required libraries to: ${java.ext.dirs}</echo>
+		<copy todir="${java.ext.dirs}" verbose="true">
+			<fileset refid="dependency.fileset" />
+			<mapper type="flatten" />
+			<fileset file="${target.dir}/${jar.name}" />
+		</copy>
+
+		<echo>Installing plugins</echo>
+		<java fork="false" classname="net.sf.jipcam.Install">
+			<classpath>
+				<fileset file="${target.dir}/${jar.name}" />
+				<fileset refid="dependency.fileset" />
+			</classpath>
+			<sysproperty key="log4j.configuration" value="${src.dir}/log4j.properties" />
+		</java>
+	</target>
+
+	<!--
+	uninstall from JVM
+	Note: You will be unable to delete the appropriate files if you have a running
+	java process because the .jar files will be "in use".  If uninstall fails,
+	try to stop the running java process (stop Eclipse, or Tomcat, or ???) then
+	manually delete the files that weren't deleted by Ant. (NOTE: ant is considered
+	a running java process as well.)
+	 -->
+	<target name="uninstall" description="--> delete all installed files from $JAVA_HOME/lib/ext">
+		<echo>Attempting to delete ${maven.project.name} files from ${java.ext.dirs}</echo>
+		<delete file="${java.ext.dirs}/${jar.name}" verbose="true" />
+	</target>
+
+	<!-- create binary library release bundle for SF.net -->
+	<target name="release-bin" depends="jar" description="--> build the jar file and bundle it as a releaseable zip for sourceforge">
+		<zip destfile="${target.dir}/${maven.project.artifactId}-${maven.project.version}-bin.zip">
+			<fileset file="${target.dir}/${jar.name}" />
+			<fileset file="release-notes.txt" />
+			<fileset file="readme.txt" />
+			<fileset file="license.txt" />
+		</zip>
+	</target>
+
+	<!-- create source library release bundle for SF.net -->
+	<target name="release-src" depends="clean" description="--> build the jar file and bundle it as a releaseable zip for sourceforge">
+		<mkdir dir="${target.dir}" />
+		<zip destfile="${target.dir}/${maven.project.artifactId}-${maven.project.version}-src.zip">
+			<fileset dir="${basedir}">
+				<exclude name="bin" />
+				<exclude name=".*" />
+				<exclude name="${target.dir}" />
+				<include name="**/*" />
+			</fileset>
+		</zip>
+	</target>
+
+	<!-- create release bundles for SF.net -->
+	<target name="release" depends="release-src,release-bin" description="--> build sf.net bundles" />
+
+	<!-- publish the bundle to SF.net -->
+	<target name="publish-bundle" description="--> publish the maven bundle to sourceforge">
+		<echo message="Uploading Maven bundle to SF.net" />
+		<exec executable="scp">
+			<arg value="${target.dir}/${bundle.jar}" />
+			<arg value="gogodoit@shell.sourceforge.net:/home/groups/j/ji/jipcam/htdocs/downloads/." />
+		</exec>
+		<echo message="Modifying file permissions on SF.net" />
+		<exec executable="ssh">
+			<arg value="gogodoit@shell.sourceforge.net" />
+			<arg value="chmod 644 /home/groups/j/ji/jipcam/htdocs/downloads/${bundle.jar}" />
+		</exec>
+	</target>
+
+	<!-- cruisecontrol continuous build integration -->
+	<target name="cruisecontrol" depends="release" description="--> cc target for automated builds" />
+
+</project>

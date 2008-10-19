@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>jipCam News</title>
+    <author email="gogodoit-AT-sourceforge.net">Jason Thrasher</author>
+  </properties>
+  <body>
+    <section name="July 6, 2007: jipCam 0.9.3 Released, Cameras Added">
+	<p>
+	jipCam ver. 0.9.3 now supports Axis 205, Axis 206M, and Axis 207 network cameras thanks to a generous donation by Nigel Simpson and <a href="http://www.sun.com/">Sun Microsystems</a>.  These cameras are supported out of the box, just as with the older Axis 2100 and 2120.  No code changes should be needed.
+	</p>
+	<p>
+	Nigel on how Sun is using jipCam:
+	<blockquote>
+	We've been developing a telepresence device we call the <a href="http://research.sun.com/projects/mc/porta-person.html">Porta-Person</a>. Essentially, this is device that provides bidirectional video and high fidelity audio for remote attendees in a conference.  
+	The aim of this project is to give remote participants equal status in a meeting where most people are co-located in a conference room.  
+	<br/>
+	What the remote participant sees is a panorama of the conference room with a live video frame that they can drag around. Dragging the frame rotates the Porta-Person so it turns to face the person you're looking at. We use jipcam to display the video.
+	<br/>
+	In <a href="http://research.sun.com/projects/mc/mpk20.html">MPK20</a>, we've developed a 3D virtual world which is designed for distributed teams to work together in a rich multimedia environment which supports live application sharing.
+	<br/>
+	We're also using jipCam to display the panorama in the 3D world, which is quite cool because it means that people in the virtual world can look out into the real world and, of course, vice versa.
+	</blockquote>
+	</p>
+	<p>
+	How is your company using jipCam?  Let us know and we'll feature you here!
+	</p>
+    </section>
+
+    <section name="June 2, 2007: Migrated to Maven2 Builds">
+	<p>
+	We're moving towards a 1.0 release.  The current CVS HEAD now reads 1.0-SNAPSHOT.  The codebase has been stable for quite a while now, therefore goals for 1.0 are simply: migration to Maven (done), addition of JUnit tests.
+	</p>
+	<p>
+	In an effort to consolidate a lot of hacked code, the whole build structure was moved to Apache Maven.  Ant is no longer used for builds.  This makes it easier to only use the jar files requried for a given project (like just the jipcam-axis-core.jar file).
+	</p>
+<div class="source"><pre># building with Apache Maven
+$ cvs -d cvs:pserver:anonymous@jipcam.cvs.sourceforge.net:/cvsroot/jipcam login
+$ cvs -d cvs:pserver:anonymous@jipcam.cvs.sourceforge.net:/cvsroot/jipcam co jipcam
+$ cd jipcam
+$ mvn install package
+# All of the JAR and WAR files are now created, and installed in your local Maven repository</pre></div>
+
+	<p>
+	Jetty can now be used to run the Axis Camera Emulator right from the command line, so there's no fiddling with Tomcat, or any other container, when you just want to try things out.
+	</p>
+	
+<div class="source"><pre># running the Axis Camera Emulator using Jetty
+$ cd jipcam
+$ mvn install
+$ cd jipcam-axis/jipcam-axis-emulator/
+$ mvn jetty:run-war</pre></div>
+
+	<p>
+	You'll still need the Java Media Framework file installed into your local Maven repository.  This needs to be done manually, after installing the JMF library, like this:
+<div class="source"><pre>mvn install:install-file \
+                "-Dfile=C:\Program Files\JMF2.1.1e\lib\jmf.jar" \
+                -DgroupId=javax.media \
+                -DartifactId=jmf \
+                -Dversion=2.1.1e \
+                -Dpackaging=jar
+                
+        (back slashes added for clarity, remove them for your system)</pre></div>
+		
+	</p>
+    </section>
+
+    <section name="October 18, 2006: Axis Camera Emulator Fixed">
+	<p>
+	The hosting site for the camera emulator went down due to some major infrastructural changes.
+	It's all back online now: you can test your Axis code against the camera emulator url here:
+	<a href="http://www.coachthrasher.com/axis-cgi/">http://www.coachthrasher.com/axis-cgi/</a>.
+	</p>
+    </section>
+    <section name="May 27, 2006: SF.net CVSROOT changes">
+	<p>
+	SourceForge.net has apparently changed the DNS required for some projects.  If you are using jipcam via CVS, you'll need to update your CVS root<br/>
+	from: anonymous&#64;cvs.sourceforge.net:/cvsroot/jipcam<br/>
+	to: anonymous&#64;jipcam.cvs.sourceforge.net:/cvsroot/jipcam<br/>
+	</p>
+    </section>
+    <section name="May 5, 2006: ACE Demo Site">
+	<p>
+	I setup an ACE demo site where you can test the Axis Camera Emulator.  It's located here: <a href="http://www.coachthrasher.com/axis-cgi/">ACE</a>.  Only two Axis API URLs work: the parameter url, and the MJPEG streaming url.  The three demonstrated features of ACE are:
+	<ul>
+	<li><a href="http://www.coachthrasher.com/axis-cgi/admin/getparam.cgi">Camera Parameters</a>
+	try API url variations like:<br />
+	http://www.coachthrasher.com/axis-cgi/admin/getparam.cgi?root.Network<br />
+	http://www.coachthrasher.com/axis-cgi/admin/getparam.cgi?root.BRAND.PRODFULLNAME<br />
+	</li>
+	<li><a href="http://www.coachthrasher.com/axis-cgi/mjpg/video.cgi?req_fps=1">MJPEG Video Stream</a>
+	try to vary the framerate according to the camera API:<br />
+	http://www.coachthrasher.com/axis-cgi/mjpg/video.cgi?req_fps=10<br />
+	http://www.coachthrasher.com/axis-cgi/mjpg/video.cgi?req_fps=3<br />
+	</li>
+	<li><a href="http://www.coachthrasher.com/axis-cgi/applet.html">Applet Viewer</a> You must have the <a href="http://java.sun.com/products/java-media/jmf/">Java Media Framework</a> for the applet to run.
+	This is meant to demonstrate the performance benefits of using the Java Media Framework for viewing video.  Data is being streamed from ACE to the applet, just like a camera.  jipCam is providing video parsing and buffer passing to JMF.  This url isn't the same as the Axis camera's url, since it doesn't provide the same admin features.  The video display is a running loop recorded from a from an Axis 2120 at 10 FPS.
+	</li>
+	</ul>
+
+	</p>
+    </section>
+    <section name="April 16, 2006: Axis Camera Emulator (ACE) added">
+			<p>
+				The Axis Camera Emulator is a servlet-based webapp that provides a software simulation of Axis 2100 or 2120 camera hardware.  It was born out of a need to load test image acquisition systems without purchasing new hardware.  It can simulate an Axis 2100 (~$300 USD, April 2006), or an Axis 2120 (~$1400 USD, April 2006), thus saving you that much money per camera for your development and testing needs!
+			</p>
+			<p>
+				Probably the most productive use of ACE would be to provide a continuous integration cycle for your development team: run your unit tests for each image analysis module in an automated fashion against ACE, with known video feeds looping.
+			</p>
+			<p>
+				The ACE webapp can be deployed to a servlet container (like Tomcat 5.5, OC4J, etc.) to allow simulation of the MJPEG-streaming capability of Axis cameras.  The full Axis v1.1 API is not supported, only camera properties (read only), and MJPEG streaming are supported.  A viewer applet is also provided to simulate viewing, much like the Axis camera's built in viewer.  Note that the jipCam-Axis Applet uses only ~50% of the cpu load of the Axis-embedded viewer applet, likely due to the use of Java Media Framework in jipCam.
+			</p>
+			<p>
+				ACE is bundled with two sample MJPEG streams that loop in the applet when requested.  You can record your own MJPEG raw streams with your own cameras and deploy them to ACE for playback.  (Hint: run "ant -p" to see how to easily capture raw MJPEG from Axis cameras.)  This allows you to create build-and-test situations where you need to test your image acquisition code through a camera, but have a hard time simulating the camera's scene/stream at will (i.e. you're tired of walking in front of the camera!).
+			</p>
+			<p>
+				  The image framerate can also be changed well beyond the camera's 15/30FPS hardware limits, up to the point the network is saturated.  This allows faster unit testing if your algorithms aren't sensitive to the time domain.  For example, you could perform unit testing of a long video sequence at 1000 frame per second to speed up the test cycle of 10 FPS video by two orders of magnitude.  The framerate is managed in the web.xml file, or via the MJPEG URL.
+			</p>
+			<p>
+				You can conceivably deploy multiple ACE webapps to the same server on different ports to simulate any number of cameras simultaneously.  In testing a dual-Athlon MX 2000 system can handle 10 ACE deployments simulating 10 cameras, all streaming at the same time.  I'm sure more modern hardware could handle more ACE deployments but you may hit a bottleneck on the ethernet line (100/1000 MBit bandwidth limitations) before you saturate the hardware's resources.
+			</p>
+    </section>
+    <section name="April 16, 2006: Version 0.9.2 has been released.">
+	<p>
+	The Axis Camera Emulator had been added, and a minor bug was fixed in the MJPEG streaming servlet.
+	</p>
+    </section>
+    <section name="March 2, 2006: jipCam Added to Maven 2">
+			<p>
+				jipCam has been added to the Maven 2 repository on ibiblio.  This allows much easier project integration via the Maven toolset.  Developers no longer need to build from sources to manage the version of jipCam they are using.
+			</p>
+			<p>
+				To use jipCam via Maven2, create a new dependency with groupId="net.sf.jipcam", artifactId="jipcam", and version="0.9.1", then rebuild your project.
+			</p>
+    </section>
+    <section name="Feb 28, 2006: Version 0.9.1 has been released.">
+      <p>
+        There are several, mostly cosmetic, bugfixes in the 0.9.1 release.
+        Note that if you've been working with the 0.9.0 release and you run CVS
+        update on the sources, you will need to re-run "mvn install:install-file"
+        according to the release notes.
+      </p>
+    </section>
+  </body>
+</document>
+

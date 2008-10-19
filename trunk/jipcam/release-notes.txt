@@ -1,0 +1,185 @@
+jipCam : The Java IP Camera Project
+Copyright (C) 2005-2007 Jason Thrasher
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+Release Notes: 0.9.3
+
+*Plugins
+
+	This release allows JMF connections to the following IP Cameras:
+	
+    * Axis 2100
+  
+    * Axis 2120
+    
+    * Axis 205
+    
+    * Axis 206M
+    
+    * Axis 207
+    
+    []
+
+*Building
+
+	You must have a JDK (1.5.0 has been tested), and a the JMF (2.1.1e has been tested), installed in order to build.  You need
+Maven version 2.0.6 or higher installed for building from source.
+
+	The Java Media Framework jar file is not published in the public Maven repository on ibiblio.
+It must be installed manually to your local Maven repository.
+On windows this would be done with:
+
++------------------------------------------------------------------------+
+	mvn install:install-file \
+		"-Dfile=C:\Program Files\JMF2.1.1e\lib\jmf.jar" \
+		-DgroupId=javax.media \
+		-DartifactId=jmf \
+		-Dversion=2.1.1e \
+		-Dpackaging=jar
+		
+	(back slashes added for clarity, remove them for your system)
+	
++------------------------------------------------------------------------+
+
+	Note that the "jmf.jar" file will be known by Maven as "jmf-2.1.1e.jar".  This won't affect your JMF configuration.
+
+	Finally use Maven to perform a jar-based build:
+	
++------------------------------------------------------------------------+
+	mvn package
++------------------------------------------------------------------------+
+
+*Installation
+
+	To install jipCam into your local Maven repository for use with other projects
+use this command:
+
++------------------------------------------------------------------------+
+	mvn install
++------------------------------------------------------------------------+
+
+	To use jipCam with JMFStudio, the JAR file should be copied to the
+JAVA_HOME/lib/ext directory.  Since this library relies on several other
+libraries, all of them will need to be copied to your JAVA_HOME/lib/ext
+directory.  All dependancies are listed in the project reports here: {{http://jipcam.sourceforge.net/jipcam-axis/dependencies.html}}
+	
+	Now run JMFStudio (v2.1.1e) and check that the appropriate plugins are
+installed:
+	
+	* Start JMStudio
+	
+	* Navigate the menu to File / Preferences (the JMF Registry Editor should open)
+	
+	* Choose the "Packages" tab
+	
+	* Verify that the "Protocol Prefix List" lists "net.sf.jipcam.axis".
+	
+	[]
+	
+*Viewing MJPEG-based Video
+
+	The simplest way to run jipCam at this time is to use JMFStudio to connect to
+an IP-Camera.  No programming steps are required to view video when JMFStudio is
+used.  First, install jipCam with Ant as noted above.  Then run JMFStudio,
+select File/Open URL.  Enter the URL of your target camera (http://10.0.0.90 ?,
+or maybe a you've googled for an Axis camera URL?).  Press Open, and if all is
+successful, you should see the video stream.
+
+*Application Integration
+
+	If you are using jipCam in your own Applet, or Application, you must package
+the jipCam jar file, and all library {{dependencies.html}} with it.  If you are
+developing a project and using Maven for project management, add this dependancy
+to your pom.xml file:
+
++------------------------------------------------------------------------+
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.jipcam</groupId>
+			<artifactId>jipcam</artifactId>
+			<version>0.9.3</version>
+			<scope>compile</scope>
+		</dependency>
+		...
+	</dependencies>
+
++------------------------------------------------------------------------+
+
+*Axis Camera Emulator (ACE)
+	
+	ACE provides software simulation of Axis 2100 and 2120 IP cameras.  It
+requires a servlet container, and has only been tested in Apache Tomcat 5.5 and
+Oracle OC4J 9.0.2, and Jetty 6.  The best use of ACE is in a continuous integration
+development cycle where new video analysis modules are built and tested
+against known video loops via ACE.
+
+	With the new Maven support, Jetty is downloaded and configured on the fly for
+use as a camera emulator.  There's nothing to install!
+
+	To build and run the emulator with Jetty, you must first follow the
+instructions for building, above.  Once you are able to build jipCam with Maven,
+run the ACE with something like:
+
++------------------------------------------------------------------------+
+	cd jipcam
+	mvn install
+	cd jipcam-axis/jipcam-axis-emulator
+	mvn jetty:run
+	
++------------------------------------------------------------------------+
+
+	Jetty should startup on it's own, on port 8080.  Now browse to: {{http://127.0.0.1:8080/axis-cgi/}} or, stream MJPEG data directly from: {{http://127.0.0.1:8080/axis-cgi/mjpg/video.cgi?req_fps=10}}
+	
+	Note: you can crank the frame-rate up pretty far to test your other camera client code without being throttled to the default camera framerates!  Try 100 fps and see how your system responds.  You'll likely saturate your network bandwidth before your cpu.
+
+*Changes 0.9.2 to 0.9.3
+
+	1) Moved to Maven2 based builds, adding copious reports and documentation to the site.
+	
+	2) Broke project into modules for "core" and "emulator" functions
+	
+	3) Support for additional cameras added: Axis 205, 206M, 207 (thanks to Nigel Simpson and Sun Microsystems!)
+	
+	4) Added minimal JUnit tests.
+	
+	5) Added support for Jetty to allow Axis Camera Emulator to run with zero configuration.
+
+*Changes 0.9.1 to 0.9.2
+
+	1) The Axis Camera Emulator (ACE) has been added to provide software simulation of Axis 2100 and 2120 hardware IP cameras.
+
+	2) A bug was fixed in the ACE MJPEG streaming servlet whereby the servlet incorrectly looped on the raw MJPEG file and CPU usage went to 100%.
+
+*Changes 0.9.0 to 0.9.1
+
+	1) The Maven dependancy for JMF has changed to comply with the Maven naming conventions.  The net effect is that this command must be re-run:
+
++------------------------------------------------------------------------+
+	mvn install:install-file \
+		"-Dfile=C:\Program Files\JMF2.1.1e\lib\jmf.jar" \
+		-DgroupId=javax.media \
+		-DartifactId=jmf \
+		-Dversion=2.1.1e \
+		-Dpackaging=jar
+		
+	(back slashes added for clarity, remove them for your system)
+	
++------------------------------------------------------------------------+
+
+	2) The build.xml has been extensively refactored.  The AxisPlayer should be run directly from the build.xml.  Any other method is unsupported.
+
+	3) There were several compiled-in text fixes for command line help using commons-cli that had incorrect names that are now fixed.

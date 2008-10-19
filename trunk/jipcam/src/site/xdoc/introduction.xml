@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>jipCam Homepage</title>
+    <author email="gogodoit@sourceforge.net">The jipCam Team</author>
+  </properties>
+  <body>
+    <section name="jipCam :: The Java IP Camera Project">
+<p>
+	jipCam provides a Java Media Framework based datasource to read from different Internet Protocol based video cameras. A computer with Java, and the Java Media Framework, can install jipCam as a JMF protocol handler to allow an IP-based camera's video to become available for processing in JMF. This library is intended for use by developers seeking to build applications using IP-based video cameras on a Java platform.
+</p>
+<p>
+	With the explosion of IP-based cameras on the market for security or general monitoring, we found that there were non-standard image formats and protocol uses being implemented by the manufacturers for different reasons. We also found that simple video display, and image processing performance, was less than desirable given the available solutions for these cameras. We wanted to use a standard video codec and delivery method, or at least use a standard set of tools to handle the video within our custom application. Thus, jipCam was born by standardizing on JMF, and providing generic access to different cameras as a JMF datasource.
+</p>
+<p>
+	jipCam was originally developed by Jason Thrasher, working as an independent consultant for eyeQ Inc. on an advanced video analytics solution. Having benefited by the use of other open source projects, and understanding the need for a general purpose IP-based video datasource, eyeQ agreed to make this library available to others.
+</p>
+<p>
+	Currently jipCam supports several IP-based <a href="cameras.html">cameras</a>. Given the camera's base url (http://my.cameraurl.com), jipCam's datasource provider will connect to the camera, identify it, and initiate the default video stream defined by the camera's administrative interface. If the JMF's JMStudio application is being used to connect, then a live video feed will display.  (Note: the camera must not have an administrative username or password configured for use in JMFStudio.)
+</p>
+<p>
+	New cameras are usually added when someone who physically has access to an unsupported model writes the patch to support those cameras.  In the future, we would like to allow connection to a wider range of IP cameras, and allow vendor-specific features of those cameras to be exposed using the standard JMF API.
+</p>
+
+    </section>
+  </body>
+</document>
+
+
