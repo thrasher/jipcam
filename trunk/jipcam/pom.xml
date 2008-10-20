@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.sf.jipcam</groupId>
@@ -9,21 +10,20 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>jipCam POM</name>
-	<url>http://jipcam.sourceforge.net/</url>
+	<name>jipCam Parent</name>
 	<inceptionYear>2005</inceptionYear>
+	<url>http://jipcam.sourceforge.net</url>
 	<description>
 		jipCam provides a JMF-based datasource implementation for
 		IP-based video cameras. This allows Internet Procotol based
 		cameras like the Axis product line to be used directly in a Java
 		Media Framework enabled video application.
-		
-		Currently Axis 2100, 2120, 2130 PZT, 205, 206M, and 207 cameras are supported.
 	</description>
 
 	<prerequisites>
-		<maven>2.0.6</maven>
+		<maven>2.0.9</maven>
 	</prerequisites>
+	>
 
 	<organization>
 		<name>SourceForge</name>
@@ -40,12 +40,14 @@
 
 	<scm>
 		<connection>
-			scm:cvs:pserver:anonymous@${pom.artifactId}.cvs.sourceforge.net:/cvsroot/${pom.artifactId}
+			scm:svn:https://jipcam.svn.sourceforge.net/svnroot/jipcam/trunk/jipcam
 		</connection>
 		<developerConnection>
-			scm:cvs:ext:${maven.username}@${pom.artifactId}.cvs.sourceforge.net:/cvsroot/${pom.artifactId}
+			scm:svn:https://jipcam.svn.sourceforge.net/svnroot/jipcam/trunk/jipcam
 		</developerConnection>
-		<url>http://jipcam.cvs.sourceforge.net/jipcam/</url>
+		<url>
+			https://jipcam.svn.sourceforge.net/svnroot/jipcam/trunk/jipcam
+		</url>
 	</scm>
 
 	<distributionManagement>
@@ -57,9 +59,8 @@
 		<site>
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
-			<url>
-				scp://${sf.user}:${sf.pass}@shell.sourceforge.net/home/groups/j/ji/jipcam/htdocs/
-			</url>
+			<!-- public shell key must be installed at sf for this to work -->
+			<url>scp://gogodoit,jipcam@web.sourceforge.net:/home/groups/j/ji/jipcam/htdocs</url>
 		</site>
 	</distributionManagement>
 
@@ -140,7 +141,7 @@
 		<developer>
 			<id>gogodoit</id>
 			<name>Jason Thrasher</name>
-			<email>jason AT coachthrasher.com</email>
+			<email>jasonthrasher@gmail.com</email>
 			<url>http://www.coachthrasher.com</url>
 			<organization>Jason Thrasher</organization>
 			<organizationUrl>
@@ -156,8 +157,6 @@
 
 	<contributors>
 		<contributor>
-			<name>Schuyler Cullen</name>
-			<email>schuyler.cullen@eyeqinc.com</email>
 			<url>http://www.eyeqinc.com</url>
 			<organization>eyeQ, Inc.</organization>
 			<organizationUrl>http://www.eyeqinc.com</organizationUrl>
@@ -183,10 +182,9 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.5.1</version>
 				<configuration>
 					<additionalProjectnatures>
 						<projectnature>
@@ -215,7 +213,7 @@
 					<commitByProject>true</commitByProject>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2-beta-1</version>
@@ -306,24 +304,28 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.0</version>
-			</plugin>
-			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
+					<source>1.5</source>
 					<aggregate>true</aggregate>
-					<docencoding>UTF-8</docencoding>
-					<linksource>true</linksource>
+					<failOnError>false</failOnError>
 					<links>
-						<link>http://java.sun.com/products/java-media/jmf/2.1.1/apidocs/</link>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+						<link>
+							http://java.sun.com/j2se/1.5.0/docs/api/
+						</link>
+						<link>
+							http://java.sun.com/javaee/5/docs/api/
+						</link>
+						<link>
+							http://java.sun.com/javase/technologies/desktop/media/jmf/2.1.1/apidocs/
+						</link>
+						<link>
+							http://static.springframework.org/spring/docs/2.0.x/api/
+						</link>
 					</links>
-					<bottom><![CDATA[Copyright &#169; ${inceptionYear}-2007 Jason Thrasher. All Rights Reserved.]]> 
-					</bottom>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-jxr-plugin</artifactId>
 			</plugin>
@@ -349,26 +351,6 @@
 					</tags>
 				</configuration>
 			</plugin>
-			<!--
-				<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changelog-plugin</artifactId>
-				<configuration>
-				<displayFileDetailUrl>
-				http://jipcam.cvs.sourceforge.net/jipcam/jipcam%FILE%?view=markup
-				</displayFileDetailUrl>
-				</configuration>
-				<configuration>
-				<type>range</type>
-				<range>30</range>
-				<type>tag</type>
-				<tags>
-				<tag implementation="java.lang.String">tag_1_0_0</tag>
-				<tag implementation="java.lang.String">tag_1_0_1</tag>
-				</tags>
-				</configuration>
-				</plugin>
-			-->
 		</plugins>
 	</reporting>
 
