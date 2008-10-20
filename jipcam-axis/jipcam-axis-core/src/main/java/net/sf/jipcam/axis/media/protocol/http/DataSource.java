@@ -1,6 +1,6 @@
 /**
  * jipCam : The Java IP Camera Project
- * Copyright (C) 2005-2006 Jason Thrasher
+ * Copyright (C) 2005-2008 Jason Thrasher
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,6 +38,8 @@ import javax.media.protocol.PullBufferStream;
 import net.sf.jipcam.axis.Axis205CaptureDevice;
 import net.sf.jipcam.axis.Axis206MCaptureDevice;
 import net.sf.jipcam.axis.Axis207CaptureDevice;
+import net.sf.jipcam.axis.Axis207MCaptureDevice;
+import net.sf.jipcam.axis.Axis207MWCaptureDevice;
 import net.sf.jipcam.axis.Axis2100CaptureDevice;
 import net.sf.jipcam.axis.Axis2120CaptureDevice;
 import net.sf.jipcam.axis.Axis2130CaptureDevice;
@@ -149,6 +151,7 @@ public class DataSource extends PullBufferDataSource {
 							String prodName = api.getProductFullName();
 
 							if (prodName != null) {
+								System.err.println(prodName);
 								if (prodName
 										.equalsIgnoreCase(Axis2100CaptureDevice.PRODUCT_FULL_NAME)) {
 									device = new Axis2100CaptureDevice(mLocator);
@@ -175,6 +178,17 @@ public class DataSource extends PullBufferDataSource {
 									formats = device.getCaptureDeviceInfo()
 											.getFormats();
 								} else if (prodName
+										.equalsIgnoreCase(Axis207MCaptureDevice.PRODUCT_FULL_NAME)) {
+									device = new Axis207MCaptureDevice(mLocator);
+									formats = device.getCaptureDeviceInfo()
+											.getFormats();
+								} else if (prodName
+										.equalsIgnoreCase(Axis207MWCaptureDevice.PRODUCT_FULL_NAME)) {
+									device = new Axis207MWCaptureDevice(
+											mLocator);
+									formats = device.getCaptureDeviceInfo()
+											.getFormats();
+								} else if (prodName
 										.equalsIgnoreCase(Axis205CaptureDevice.PRODUCT_FULL_NAME)) {
 									device = new Axis205CaptureDevice(mLocator);
 									formats = device.getCaptureDeviceInfo()
@@ -195,6 +209,7 @@ public class DataSource extends PullBufferDataSource {
 						}
 					} else {
 						// last resort, use a generic JPEG format
+						System.err.println("Using default formats.");
 						Dimension d = api.getImageDimension();
 
 						// create a very generic JPEGFormat

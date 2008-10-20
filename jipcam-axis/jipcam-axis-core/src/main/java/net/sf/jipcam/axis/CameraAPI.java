@@ -1,6 +1,6 @@
 /**
  * jipCam : The Java IP Camera Project
- * Copyright (C) 2005-2007 Jason Thrasher
+ * Copyright (C) 2005-2008 Jason Thrasher
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -471,9 +471,9 @@ public class CameraAPI {
 	public String getProperty(String name) throws IOException {
 		Properties props = getProperties();
 		Set keySet = props.keySet();
-		for(Iterator iter = keySet.iterator(); iter.hasNext();) {
-			String keyName = (String)iter.next();
-			if(name.equalsIgnoreCase(keyName)) {
+		for (Iterator iter = keySet.iterator(); iter.hasNext();) {
+			String keyName = (String) iter.next();
+			if (name.equalsIgnoreCase(keyName)) {
 				return props.getProperty(keyName);
 			}
 		}
@@ -531,7 +531,7 @@ public class CameraAPI {
 		Image image = null;
 
 		// insert the camera number
-		String request = REQ_MJPEG.replace("REQ_IMAGE", Integer
+		String request = REQ_IMAGE.replace("CAM_NUMBER", Integer
 				.toString(cameraNumber));
 
 		try {
