@@ -23,7 +23,6 @@
 	<prerequisites>
 		<maven>2.0.9</maven>
 	</prerequisites>
-	>
 
 	<organization>
 		<name>SourceForge</name>
