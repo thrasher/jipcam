@@ -48,14 +48,15 @@ import javax.media.Time;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.sf.jipcam.axis.media.protocol.http.DataSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import net.sf.jipcam.axis.media.protocol.http.DataSource;
 
 
 public class MjpegPanel extends JPanel implements ControllerListener {
 	static JFrame frame;
-	Logger mLog = Logger.getLogger(this.getClass());
+	Logger mLog = LogManager.getLogger(this.getClass());
 
 	// media Player
 	Player player = null;

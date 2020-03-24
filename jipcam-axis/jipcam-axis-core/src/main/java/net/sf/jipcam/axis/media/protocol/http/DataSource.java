@@ -35,6 +35,9 @@ import javax.media.protocol.ContentDescriptor;
 import javax.media.protocol.PullBufferDataSource;
 import javax.media.protocol.PullBufferStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.sf.jipcam.axis.Axis205CaptureDevice;
 import net.sf.jipcam.axis.Axis206MCaptureDevice;
 import net.sf.jipcam.axis.Axis207CaptureDevice;
@@ -44,8 +47,6 @@ import net.sf.jipcam.axis.Axis2100CaptureDevice;
 import net.sf.jipcam.axis.Axis2120CaptureDevice;
 import net.sf.jipcam.axis.Axis2130CaptureDevice;
 import net.sf.jipcam.axis.CameraAPI;
-
-import org.apache.log4j.Logger;
 
 /**
  * A DataSource that reads Motion JPEG data into the JMF architecture. Only the
@@ -60,7 +61,7 @@ public class DataSource extends PullBufferDataSource {
 	protected MediaLocator mLocator = null; // source locator
 	private InputStream mIn = null;
 	protected MjpegFormatControl mFormatControl;
-	private static Logger mLog = Logger.getLogger(DataSource.class);
+	private static Logger mLog = LogManager.getLogger(DataSource.class);
 	/**
 	 * JMF plugin identifier
 	 */

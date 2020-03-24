@@ -21,8 +21,9 @@ package net.sf.jipcam.axis;
 
 import java.io.InputStream;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * MJPEG data frame parser. This class parses the input stream for MJPEG data.
@@ -38,7 +39,7 @@ import org.apache.log4j.Logger;
  * @author Jason Thrasher
  */
 public class MjpegFrameParser implements Runnable {
-	private static Logger mLog = Logger.getLogger(MjpegFrameParser.class); // logging
+	private static Logger mLog = LogManager.getLogger(MjpegFrameParser.class); // logging
 																			// mechanism
 
 	protected MjpegFrameMultiplexer frameMuxer = new MjpegFrameMultiplexer();

@@ -23,8 +23,9 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.NumberFormat;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -46,7 +47,7 @@ public class JpegSequenceCreator implements MjpegParserListener {
 	 * @param filePrefix to use for all jpeg images.
 	 */
 	public JpegSequenceCreator(String filePrefix, int maxImages) {
-		mLog = Logger.getLogger(this.getClass());
+		mLog = LogManager.getLogger(this.getClass());
 
 		mPrefix = filePrefix;
 

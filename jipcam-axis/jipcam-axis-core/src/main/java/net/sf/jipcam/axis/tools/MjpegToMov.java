@@ -44,8 +44,6 @@ import javax.media.datasink.EndOfStreamEvent;
 import javax.media.protocol.ContentDescriptor;
 import javax.media.protocol.FileTypeDescriptor;
 
-import net.sf.jipcam.axis.media.protocol.http.DataSource;
-
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -55,7 +53,10 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.sf.jipcam.axis.media.protocol.http.DataSource;
 
 // import javax.media.protocol.DataSource;
 
@@ -79,7 +80,7 @@ public class MjpegToMov implements ControllerListener, DataSinkListener {
 
 	private boolean fileSuccess = true;
 
-	private static Logger mLog = Logger.getLogger(MjpegToMov.class);
+	private static Logger mLog = LogManager.getLogger(MjpegToMov.class);
 
 	public boolean doIt(int width, int height, int frameRate,
 			String inputMjpeg, MediaLocator outML) throws FileNotFoundException {

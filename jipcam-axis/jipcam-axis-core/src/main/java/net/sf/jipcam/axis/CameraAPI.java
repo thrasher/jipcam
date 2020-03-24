@@ -47,8 +47,9 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Camera API for Axis 2100 / 2120 camera , Axis Revision: 1.14, Date:
@@ -199,7 +200,7 @@ public class CameraAPI {
 	 *            for the Axis camera
 	 */
 	public CameraAPI(URL camUrl) {
-		mLog = Logger.getLogger(this.getClass());
+		mLog = LogManager.getLogger(this.getClass());
 		mCamUrl = camUrl;
 		mClient = new HttpClient(new MultiThreadedHttpConnectionManager());
 	}

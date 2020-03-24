@@ -1,15 +1,10 @@
 package net.sf.jipcam.axis;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.Vector;
 
 import javax.media.CaptureDeviceManager;
 
 import junit.framework.TestCase;
-import net.sf.jipcam.axis.tools.FrameExtract;
 
 public class Axis2130CaptureDeviceTest extends TestCase {
 	public Axis2130CaptureDeviceTest(String name) {
@@ -20,7 +15,7 @@ public class Axis2130CaptureDeviceTest extends TestCase {
 		// Is JMF working?
 		Vector devices = CaptureDeviceManager.getDeviceList(null);
 		assertNotNull(devices);
-		assertTrue(devices.size() > 0);
+		assertTrue(devices.isEmpty());
 
 		super.setUp();
 	}
@@ -41,6 +36,10 @@ public class Axis2130CaptureDeviceTest extends TestCase {
 		// but can we add the device?
 		Axis2130CaptureDevice cam = new Axis2130CaptureDevice(name, host, port);
 		assertTrue(cam.registerDevice());
+
+		Vector devices = CaptureDeviceManager.getDeviceList(null);
+		assertNotNull(devices);
+		assertFalse(devices.isEmpty());
 	}
 
 	public static void main(String[] args) {

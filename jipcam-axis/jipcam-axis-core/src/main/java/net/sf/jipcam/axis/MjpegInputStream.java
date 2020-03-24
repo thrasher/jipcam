@@ -28,7 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -48,7 +49,7 @@ import org.apache.log4j.Logger;
  * @author Jason Thrasher
  */
 public class MjpegInputStream extends DataInputStream {
-	private static Logger mLog = Logger.getLogger(MjpegInputStream.class); //logging mechanism
+	private static Logger mLog = LogManager.getLogger(MjpegInputStream.class); //logging mechanism
 	protected int mSequence = 0;
 	protected int mContentLength = -1;
 	protected boolean isContentLengthAvailable = false;
