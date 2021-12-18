@@ -367,7 +367,7 @@
 		<!-- Testing dependency versions -->
 		<junit.version>4.13.1</junit.version>
 		<spring.version>2.0.6</spring.version>
-		<log4j.version>2.16.0</log4j.version>
+		<log4j.version>2.17.0</log4j.version>
 	</properties>
 
 </project>
